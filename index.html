@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <script>
+      // Polyfill window.fetch setter to prevent Chrome extensions/interceptors from failing with:
+      // "TypeError: Cannot set property fetch of #<Window> which has only a getter"
+      (function() {
+        try {
+          var _origFetch = window.fetch ? window.fetch.bind(window) : undefined;
+          try {
+            Object.defineProperty(window, 'fetch', {
+              value: _origFetch,
+              writable: true,
+              configurable: true,
+              enumerable: true
+            });
+          } catch (_) {
+            Object.defineProperty(window, 'fetch', {
+              get: function() { return _origFetch; },
+              set: function(fn) { _origFetch = fn; },
+              configurable: true,
+              enumerable: true
+            });
+          }
+        } catch (_) {}
+
+        // Suppress external extension errors regarding fetch getter/setter
+        window.addEventListener('error', function(e) {
+          if (e && e.message && typeof e.message === 'string' && e.message.indexOf('fetch') !== -1 && e.message.indexOf('getter') !== -1) {
+            if (typeof e.preventDefault === 'function') e.preventDefault();
+            if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+            return true;
+          }
+        }, true);
+      })();
+    </script>
+    <title>Solitaire Deluxe 26</title>
+    <meta name="description" content="A premier modern suite of 26 Solitaire games with seeded Daily Challenges, global leaderboards, fluid animations, audio effects, and mobile-optimized controls." />
+    <meta property="og:title" content="Solitaire Deluxe 26" />
+    <meta property="og:description" content="A premier modern suite of 26 Solitaire games with seeded Daily Challenges, global leaderboards, fluid animations, audio effects, and mobile-optimized controls." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0d4224" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-950 text-slate-100 select-none overflow-hidden touch-manipulation antialiased font-sans">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
